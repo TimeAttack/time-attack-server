@@ -1,0 +1,24 @@
+Default: &defaults
+  user: timeattack
+  password: timeattack
+  host: localhost
+  port: 5432
+  database: timeattack
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: timeattack_test
+  <<: *defaults
+
+Staging:
+  database: timeattack_staging
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: timeattack_production
+  poolsize: 100
+  <<: *defaults
