@@ -8,5 +8,15 @@ Email
     user UserId Maybe
     verkey Text Maybe
     UniqueEmail email
+Map
+    title Text
+    UniqueMapTitle title
+    centerLat Rational
+    centerLng Rational
+    checkpoints [Rational]
+Race
+    user UserId
+    map MapId
+    time Text
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)
