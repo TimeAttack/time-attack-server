@@ -1,12 +1,15 @@
 dist
 cabal-dev
+*.aes
 *.o
 *.hi
 *.chi
+*.iml
 *.chs.h
 .virtualenv
 .hsenv
 .cabal-sandbox/
 cabal.sandbox.config
 cabal.config
+.idea/
 yesod-devel/
