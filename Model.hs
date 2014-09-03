@@ -1,7 +1,9 @@
+{-# LANGUAGE FlexibleInstances #-}
 module Model where
 
 import Yesod
 import Data.Text (Text)
+import Data.Time (UTCTime)
 import Database.Persist.Quasi
 import Data.Typeable (Typeable)
 import Prelude

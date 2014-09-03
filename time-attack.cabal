@@ -16,11 +16,12 @@ library
                      Foundation
                      Import
                      Model
-                     Settings
+                     Settings                     
                      Settings.StaticFiles
                      Settings.Development
                      Handler.Home
-                     Handler.Race
+                     Handler.Track
+                     App.Pieces 
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -68,7 +69,9 @@ library
                  , monad-logger                  >= 0.3        && < 0.4
                  , fast-logger                   >= 2.2        && < 2.3
                  , wai-logger                    >= 2.2        && < 2.3
-                 , unix                          >= 2.6
+                 , unix                          >= 2.6        && < 3.0 
+                 , time                          >= 1.4        && < 2.0
+                 , old-locale                    >= 1.0        && < 2.0
 
 executable         time-attack
     if flag(library-only)
@@ -99,3 +102,5 @@ test-suite test
                  , monad-logger
                  , transformers
                  , hspec
+                 , time                          >= 1.4        && < 2.0
+                 , old-locale                    >= 1.0        && < 2.0

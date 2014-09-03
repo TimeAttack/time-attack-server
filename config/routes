@@ -6,4 +6,4 @@
 
 / HomeR GET POST
 
-/race/#Text RaceR GET
+/race/#UTCTimeP TrackR GET
