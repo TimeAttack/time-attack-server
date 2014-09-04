@@ -1,4 +1,5 @@
 language: haskell
 
 install:
+    - cabal install cabal-install
     - cabal install --force-reinstalls hspec cabal-meta cabal-src alex
