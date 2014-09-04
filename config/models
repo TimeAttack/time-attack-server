@@ -12,7 +12,7 @@ LatLng json
     lat Double
     lng Double      
 Track
-    created UTCTime default=now()   
+    created UTCTime
     UnicTrackDate created
     center LatLng
     checkpoints [LatLng]
