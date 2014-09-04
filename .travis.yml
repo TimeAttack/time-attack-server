@@ -1,5 +1,4 @@
 language: haskell
-ghc: 7.6
 
 install:
     - cabal install --force-reinstalls $(grep "yesod-platform\s*==" *.cabal | tr --delete ", ")
