@@ -1,8 +1,7 @@
 language: haskell
 
 install:
-    - cabal install --force-reinstalls $(grep "yesod-platform\s*==" *.cabal | tr --delete ", ")
-    - cabal install --only-dependencies
-    - cabal install
+    - cabal install yesod-platform yesod-bin --max-backjumps=-1 --reorder-goals
+    - cabal install --enable-tests . yesod-platform yesod-bin --max-backjumps=-1 --reorder-goals
 script:
     - yesod test
