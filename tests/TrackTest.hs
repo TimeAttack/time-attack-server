@@ -11,16 +11,18 @@ import App.Pieces
 
 trackSpecs :: Spec
 trackSpecs = 
-    ydescribe "Track API" $
-        yit "searches for track by created date" $ do
-            let timeStr = "201412032333"
-            let time = readTime defaultTimeLocale "%Y%m%d%M%S" "201412032333"
+    ydescribe "Track API" $ do
+        let timeStr = "201412032333"
+        let time = readTime defaultTimeLocale "%Y%m%d%M%S" "201412032333"
+        yit "searches for track by created date. but there is no track" $ do            
             get $ TrackR $ UTCTimeP time
-            statusIs 404            
+            statusIs 404                        
+            bodyContains timeStr            
+        yit "let's create new track, request it and remove it" $ do
             trackId <- runDB $ insert $ Track time (LatLng 1.2 1.3) [LatLng 23.1 22.45]            
-            get $ TrackR $ UTCTimeP time
-            runDB (delete trackId)
-            printBody
+            get $ TrackR $ UTCTimeP time            
+            runDB (delete trackId)    
             statusIs 200
-            bodyContains timeStr
-
+        yit "DB contains no tracks again" $ do            
+            get $ TrackR $ UTCTimeP time            
+            statusIs 404
