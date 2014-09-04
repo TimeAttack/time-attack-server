@@ -1,12 +1,9 @@
 language: haskell
+ghc: 7.6
 
 install:
-    - cabal update
-    - cabal install --force-reinstalls hspec cabal-meta cabal-src alex
-    - cabal-meta install --force-reinstalls
-
+    - cabal install --force-reinstalls $(grep "yesod-platform\s*==" *.cabal | tr --delete ", ")
+    - cabal install --only-dependencies
+    - cabal install
 script:
-    - cabal-meta install --enable-tests
-    - mega-sdist --test
-    - cabal install hspec cabal-meta cabal-src
-    - cabal-meta install --force-reinstalls
+    - yesod test
