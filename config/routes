@@ -6,4 +6,5 @@
 
 / HomeR GET POST
 
-/race/#UTCTimeP TrackR GET
+/track/#UTCTimeP TrackR GET
+/track/near/#LatLngP NearestTracksR GET

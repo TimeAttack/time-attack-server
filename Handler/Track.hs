@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TupleSections     #-}
-module Handler.Track where
+module Handler.Track(getTrackR, getNearestTracksR) where
 
 import           App.Pieces
 import           Import
@@ -11,8 +11,14 @@ getTrackR :: UTCTimeP -> Handler Value
 getTrackR date = runDB (getBy404 trackKey) >>= returnJson . fromTrack
     where
         trackKey = UnicTrackDate $ unUTCTimeP date        
-        fromTrack :: Entity(Track) -> TrackResponse
-        fromTrack (Entity _ track) = TrackResponse (trackCreated track) (trackCheckpoints track)    
+
+getNearestTracksR :: LatLngP -> Handler Value
+getNearestTracksR latLng = runDB (
+  selectList([ TrackCenter >. lowerBound, TrackCenter <. upperBound]) []
+  ) >>= returnJson . (map fromTrack) where 
+    range = 100
+    lowerBound = LatLng ((lat latLng) + range) (lng latLng)
+    upperBound = LatLng (lat latLng) ((lng latLng) + range)
 
 data TrackResponse = TrackResponse 
     {   created :: UTCTime
@@ -25,3 +31,5 @@ instance ToJSON TrackResponse where
            , "checkpoints" .= (checkpoints t)
              ]    
 
+fromTrack :: Entity(Track) -> TrackResponse
+fromTrack (Entity _ track) = TrackResponse (trackCreated track) (trackCheckpoints track)      
