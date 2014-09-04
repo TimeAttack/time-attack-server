@@ -6,6 +6,7 @@ cabal-dev
 *.chi
 *.iml
 *.chs.h
+*.sqlite3
 .virtualenv
 .hsenv
 .cabal-sandbox/

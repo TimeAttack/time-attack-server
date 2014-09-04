@@ -8,7 +8,6 @@ module Settings where
 import Prelude
 import Text.Shakespeare.Text (st)
 import Language.Haskell.TH.Syntax
-import Database.Persist.Postgresql (PostgresConf)
 import Yesod.Default.Config
 import Yesod.Default.Util
 import Data.Text (Text)
@@ -18,9 +17,18 @@ import Settings.Development
 import Data.Default (def)
 import Text.Hamlet
 
--- | Which Persistent backend this site is using.
-type PersistConf = PostgresConf
+#if DEVELOPMENT
+import Database.Persist.Sqlite (SqliteConf)
+#else
+import Database.Persist.Postgresql (PostgresConf)
+#endif
 
+-- | Which Persistent backend this site is using.
+#if DEVELOPMENT
+type PersistConf = SqliteConf    
+#else
+type PersistConf = PostgresConf
+#endif
 -- Static setting below. Changing these requires a recompile
 
 -- | The location of static files on your system. This is a file system
