@@ -13,12 +13,15 @@ getTrackR date = runDB (getBy404 trackKey) >>= returnJson . fromTrack
         trackKey = UnicTrackDate $ unUTCTimeP date        
 
 getNearestTracksR :: LatLngP -> Handler Value
-getNearestTracksR latLng = runDB (
-  selectList([ TrackCenter >. lowerBound, TrackCenter <. upperBound]) []
-  ) >>= returnJson . (map fromTrack) where 
+getNearestTracksR latLng = do
+  trackEntities <- runDB $ selectList([ TrackCenter >. lowerBound, TrackCenter <. upperBound]) []
+  let tracks = map fromTrack trackEntities
+  case tracks of [] -> notFound
+                 otherwise -> returnJson tracks
+  where 
     range = 100
-    lowerBound = LatLng ((lat latLng) + range) (lng latLng)
-    upperBound = LatLng (lat latLng) ((lng latLng) + range)
+    lowerBound = LatLng ((lat latLng) - range) (lng latLng - range)
+    upperBound = LatLng (lat latLng + range) ((lng latLng) + range)
 
 data TrackResponse = TrackResponse 
     {   created :: UTCTime
