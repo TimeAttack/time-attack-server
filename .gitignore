@@ -14,3 +14,5 @@ cabal.sandbox.config
 cabal.config
 .idea/
 yesod-devel/
+static/tmp
+static/combined
