@@ -12,7 +12,7 @@ trackSpecs :: Spec
 trackSpecs = 
     ydescribe "Track API" $ do 
         let timeStr = "201412032333"
-        let time = readTime defaultTimeLocale "%Y%m%d%M%S" "201412032333"
+        let time = readTime defaultTimeLocale "%Y%m%d%M%S" timeStr
         yit "searches for track by created date. but there is no track" $ do            
             get $ TrackR $ UTCTimeP time
             statusIs 404                        

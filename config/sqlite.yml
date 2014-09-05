@@ -1,0 +1,10 @@
+Default: &defaults
+  database: timeattack.sqlite3
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: timeattack_test.sqlite3
+  <<: *defaults

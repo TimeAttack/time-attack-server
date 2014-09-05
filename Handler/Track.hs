@@ -17,7 +17,7 @@ getNearestTracksR latLng = do
   trackEntities <- runDB $ selectList([ TrackCenter >. lowerBound, TrackCenter <. upperBound]) []
   let tracks = map fromTrack trackEntities
   case tracks of [] -> notFound
-                 otherwise -> returnJson tracks
+                 _ -> returnJson tracks
   where 
     range = 100
     lowerBound = LatLng ((lat latLng) - range) (lng latLng - range)

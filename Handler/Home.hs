@@ -3,6 +3,8 @@ module Handler.Home where
 
 import Import
 
+import App.Pieces
+
 -- This is a handler function for the GET request method on the HomeR
 -- resource pattern. All of your resource patterns are defined in
 -- config/routes
@@ -17,7 +19,7 @@ getHomeR = do
         handlerName = "getHomeR" :: Text
     defaultLayout $ do
         aDomId <- newIdent
-        setTitle "Welcome To Yesod!"
+        setTitleI MsgMainPageTitle
         $(widgetFile "homepage")
 
 postHomeR :: Handler Html
