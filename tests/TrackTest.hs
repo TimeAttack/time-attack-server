@@ -33,7 +33,10 @@ trackSpecs =
             trackId <- runDB $ insert $ Track time (LatLng 100.2 100.3) [LatLng 23.1 22.45]            
             get $ NearestTracksR $ LatLngP 100 100
             runDB (delete trackId)    
-            statusIs 200    
+            statusIs 200
+        yit "DB contains no tracks again" $ do            
+            get $ NearestTracksR $ LatLngP 100 100
+            statusIs 404        
 
 
 
