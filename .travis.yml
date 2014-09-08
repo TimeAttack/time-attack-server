@@ -11,11 +11,11 @@ before_install:
  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/1.20/bin:$PATH
  - export PATH=~/.cabal/bin:$PATH # for newer alex
  - cabal update
- - cabal install alex happy
+ - cabal install alex happy yesod-bin
 
 script:
   - cabal configure -v2  # -v2 provides useful information for debugging
   - cabal build
 
 install:
- - cabal install --only-dependencies
+ - cabal install --only-dependencies --reorder-goals --max-backjumps=-1
