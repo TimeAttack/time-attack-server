@@ -11,6 +11,7 @@ before_install:
   - export PATH=~/.cabal/bin:$PATH # for newer alex
   - cabal update
   - cabal install alex happy
+  - cabal install yesod-platform yesod-bin --force-reinstalls --max-backjumps=-1 --reorder-goals
 
 script:
   - cabal configure && cabal build
