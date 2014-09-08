@@ -16,4 +16,4 @@ script:
   - cabal configure && cabal build
 
 install:
-  - cabal install --only-dependencies
+  - cabal install --max-backjumps=-1 --reorder-goals
