@@ -18,6 +18,4 @@ script:
   - cabal build
 
 install:
- - cabal install --only-dependencies --max-backjumps=-1 --reorder-goals
- - sudo /opt/ghc/$GHCVER/bin/ghc-pkg recache
- - /opt/ghc/$GHCVER/bin/ghc-pkg recache --user
+ - cabal install --only-dependencies
