@@ -19,4 +19,5 @@ script:
 install:
  - cabal install alex happy
  - cabal install yesod-bin --reorder-goals --max-backjumps=-1
- - cabal install --only-dependencies --reorder-goals --max-backjumps=-1
+ - 'cabal sandbox init'
+ - cabal install -j . --only-dependencies --reorder-goals --max-backjumps=-1
