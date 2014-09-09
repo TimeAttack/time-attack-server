@@ -11,7 +11,8 @@ import Test.Hspec (hspec)
 import Application (makeFoundation)
 
 import HomeTest
-import TrackTest
+import ChallengeTest
+import TrackTest 
 
 main :: IO ()
 main = do
@@ -23,3 +24,4 @@ main = do
         yesodSpec foundation $ do
             homeSpecs
             trackSpecs
+            challengeSpecs

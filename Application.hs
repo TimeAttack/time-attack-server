@@ -28,6 +28,7 @@ import Yesod.Core.Types (loggerSet, Logger (Logger))
 -- Don't forget to add new modules to your cabal file!
 import Handler.Home
 import Handler.Track
+import Handler.Challenge
 
 -- This line actually creates our YesodDispatch instance. It is the second half
 -- of the call to mkYesodData which occurs in Foundation.hs. Please see the
@@ -62,7 +63,7 @@ makeFoundation :: AppConfig DefaultEnv Extra -> IO App
 makeFoundation conf = do
     manager <- newManager
     s <- staticSite
-    dbconf <- withYamlEnvironment (if development then "config/sqlite.yml" else "config/mysql.yml") (appEnv conf)
+    dbconf <- withYamlEnvironment (if development then "config/sqlite.yml" else "config/postgresql.yml") (appEnv conf)
               Database.Persist.loadConfig >>=
               Database.Persist.applyEnv
     p <- Database.Persist.createPoolConfig (dbconf :: Settings.PersistConf)

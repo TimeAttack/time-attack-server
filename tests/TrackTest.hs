@@ -26,8 +26,7 @@ trackSpecs =
             get $ TrackR $ UTCTimeP time            
             statusIs 404
         yit "Now lets find nearest tracks to our position. But there are no tracks in DB ;(" $ do
-            get $ NearestTracksR $ LatLngP 10 10
-            printBody
+            get $ NearestTracksR $ LatLngP 10 10            
             statusIs 404
         yit "Same story. Put track into DB. Search for it. And remove it" $ do
             trackId <- runDB $ insert $ Track time (LatLng 100.2 100.3) [LatLng 23.1 22.45]            
