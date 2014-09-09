@@ -16,7 +16,6 @@ data ChallengeR = ChallengeR {
 } deriving (Eq, Show)
 
 instance FromJSON UTCTimeP where
-    --parseJSON a = trace (show a) $ fail "exc"
     parseJSON = withText "UTCTime" $ \x -> pure $ readFormattedUTCTimeP x
 
 instance ToJSON UTCTimeP where
@@ -26,7 +25,6 @@ instance ToJSON ChallengeR where
     toJSON c = object ["user-id" .= (userId c), "track-id" .= (trackId c), "time" .= (time c) ]
 
 instance FromJSON ChallengeR where
-    --parseJSON a = trace (show a) $ fail "exc"
     parseJSON (Object o) =  ChallengeR
         <$> o .: "user-id"
         <*> o .: "track-id"
