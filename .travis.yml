@@ -7,6 +7,6 @@ install:
     - sudo chmod +x /usr/sbin/policy-rc.d
     - sudo apt-get install -y slirp lxc lxc-docker aufs-tools cgroup-lite
     - chmod +x travis/docker.sh
-    - ./travis/docker.sh | tee /tmp/test.log
+    - sudo ./travis/docker.sh | tee /tmp/test.log
 script: grep -q ^PASS /tmp/test.log && ! grep -q ^FAIL /tmp/test.log
 
