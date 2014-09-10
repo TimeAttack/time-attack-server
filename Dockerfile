@@ -1,4 +1,4 @@
-FROM wonderbeat/yesod-docker
+FROM wonderbeat/yesod
 MAINTAINER Denis Golovachev <borov.htid@gmail.com>
 
 RUN apt-get install -qy libpq-dev
