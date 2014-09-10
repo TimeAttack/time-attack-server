@@ -9,3 +9,4 @@ install:
     - chmod +x travis/docker.sh
     - ./travis/docker.sh | tee /tmp/test.log
 script: grep -q ^PASS /tmp/test.log && ! grep -q ^FAIL /tmp/test.log
+
