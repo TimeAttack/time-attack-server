@@ -82,7 +82,7 @@ executable         time-attack
         Buildable: False
 
     main-is:           main.hs
-    hs-source-dirs:    app
+    hs-source-dirs:    App
     build-depends:     base
                      , time-attack
                      , yesod
