@@ -1,7 +1,6 @@
 FROM wonderbeat/yesod
 MAINTAINER Denis Golovachev <borov.htid@gmail.com>
 
-COPY time-attack.cabal /
-RUN apt-get install -qy libpq-dev
-RUN cabal install --only-dependencies
-RUN rm time-attack.cabal
+RUN apt-get install git -qy libpq-dev
+RUN git clone https://github.com/TimeAttack/time-attack-server.git
+RUN cd time-attack-server && cabal install --only-dependencies
