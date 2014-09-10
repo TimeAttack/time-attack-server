@@ -19,7 +19,7 @@ getTrackR date = runDB (getBy404 trackKey) >>= returnJson . fromTrack
 putTrackR :: UTCTimeP -> Handler Value
 putTrackR time = do
   track <- requireJsonBody
-  runDB $ insert $ Track (unUTCTimeP $ time) (center track) (checkpoints track)
+  _ <- runDB $ insert $ Track (unUTCTimeP $ time) (center track) (checkpoints track)
   sendResponseStatus status204 ()
 
 getNearestTracksR :: LatLngP -> Handler Value
