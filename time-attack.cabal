@@ -16,13 +16,14 @@ library
                      Foundation
                      Import
                      Model
-                     Settings                     
+                     Settings
                      Settings.StaticFiles
                      Settings.Development
                      Handler.Home
                      Handler.Track
                      Handler.Challenge
-                     App.Pieces 
+                     App.Pieces
+                     App.UTCTimeP
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
@@ -71,7 +72,7 @@ library
                  , monad-logger                  >= 0.3        && < 0.4
                  , fast-logger                   >= 2.2        && < 2.3
                  , wai-logger                    >= 2.2        && < 2.3
-                 , unix                          >= 2.6        && < 3.0 
+                 , unix                          >= 2.6        && < 3.0
                  , time                          >= 1.4        && < 2.0
                  , old-locale                    >= 1.0        && < 2.0
                  , http-types                    >= 0.8.5      && < 2.0

@@ -12,6 +12,7 @@ import           Data.Time
 import           Handler.Challenge       (ChallengeR (..))
 import           System.Locale
 import           TestImport
+import App.UTCTimeP
 
 challengeSpecs :: Spec
 challengeSpecs =
