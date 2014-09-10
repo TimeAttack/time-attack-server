@@ -32,9 +32,9 @@ postAttemptR = do
         user <- get userKey
         track <- get trackKey
         return (user, track)
-    case (user, track) of
-        (Just _, Just _) -> _ <-runDB $ insert $ Challenge userKey trackKey $ unUTCTimeP (time challenge)
-        _ -> sendResponseStatus status400 ()
+    _ <- case (user, track) of
+            (Just _, Just _) -> runDB $ insert $ Challenge userKey trackKey $ unUTCTimeP (time challenge)
+            _ -> sendResponseStatus status400 ()
     sendResponseStatus status204 ()
 
 
