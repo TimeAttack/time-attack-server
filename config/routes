@@ -6,7 +6,7 @@
 
 / HomeR GET POST
 
-/track/#UTCTimeP TrackR GET
+/track/#UTCTimeP TrackR GET PUT
 /track/near/#LatLngP NearestTracksR GET
 
 /challenge/submit AttemptR POST

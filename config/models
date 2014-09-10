@@ -11,14 +11,17 @@ Email
 LatLng json
     lat Double
     lng Double
+    deriving Show
 Track
     created UTCTime
     UnicTrackDate created
     center LatLng
     checkpoints [LatLng]
+    deriving Show
 Challenge
     user UserId
     track TrackId
     time UTCTime
+    deriving Show
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

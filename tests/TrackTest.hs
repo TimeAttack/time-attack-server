@@ -8,6 +8,8 @@ import           System.Locale
 import           TestImport
 import App.Pieces
 import App.UTCTimeP
+import           Data.Aeson
+import Handler.Track
 
 trackSpecs :: Spec
 trackSpecs =
@@ -24,6 +26,20 @@ trackSpecs =
             runDB (delete trackId)
             statusIs 200
         yit "DB contains no tracks again" $ do
+            get $ TrackR $ UTCTimeP time
+            statusIs 404
+        yit "Lets try to submit new track with PUT and JSON" $ do
+            request $ do
+              setMethod "PUT"
+              setUrl (TrackR $ UTCTimeP time)
+              setRequestBody $ encode $ TrackP (UTCTimeP time) [LatLng 23.12 34.3, LatLng 45.3 43.23]
+            statusIs 204
+        yit "GET by ID should work now" $ do
+            get $ TrackR $ UTCTimeP time
+            printBody
+            statusIs 200
+        yit "OK. Remove this track" $ do
+            runDB (deleteBy $ UnicTrackDate time)
             get $ TrackR $ UTCTimeP time
             statusIs 404
         yit "Now lets find nearest tracks to our position. But there are no tracks in DB ;(" $ do

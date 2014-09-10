@@ -1,17 +1,26 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TupleSections     #-}
-module Handler.Track(getTrackR, getNearestTracksR) where
+{-# LANGUAGE TemplateHaskell   #-}
+module Handler.Track(getTrackR, putTrackR, getNearestTracksR, TrackP(..)) where
 
 import           App.Pieces
+import           App.UTCTimeP
 import           Import
-import Data.Time
-import           System.Locale
-import App.UTCTimeP
+import           Network.HTTP.Types.Status
+import Data.Aeson.TH
+import Data.Char(toLower)
+import Data.List(head,last)
 
 getTrackR :: UTCTimeP -> Handler Value
 getTrackR date = runDB (getBy404 trackKey) >>= returnJson . fromTrack
     where
         trackKey = UnicTrackDate $ unUTCTimeP date
+
+putTrackR :: UTCTimeP -> Handler Value
+putTrackR time = do
+  track <- requireJsonBody
+  runDB $ insert $ Track (unUTCTimeP $ time) (center track) (checkpoints track)
+  sendResponseStatus status204 ()
 
 getNearestTracksR :: LatLngP -> Handler Value
 getNearestTracksR latLng = do
@@ -24,16 +33,19 @@ getNearestTracksR latLng = do
     lowerBound = LatLng ((lat latLng) - range) (lng latLng - range)
     upperBound = LatLng (lat latLng + range) ((lng latLng) + range)
 
-data TrackResponse = TrackResponse
-    {   created :: UTCTime
+data TrackP = TrackP
+    {   created     :: UTCTimeP
       , checkpoints :: [LatLng]
-    }
+    } deriving (Show)
 
-instance ToJSON TrackResponse where
- toJSON t =
-    object [ "date"  .= formatTime defaultTimeLocale "%Y%m%d%M%S" (created t)
-           , "checkpoints" .= (checkpoints t)
-             ]
+center :: TrackP -> LatLng
+center track = LatLng (sumLat / 2) (sumLng / 2) where
+      firstPoint = head $ checkpoints track
+      lastPoint = last $ checkpoints track
+      sumLat = (latLngLat firstPoint) + (latLngLat lastPoint)
+      sumLng = (latLngLng firstPoint) + (latLngLng lastPoint)
 
-fromTrack :: Entity(Track) -> TrackResponse
-fromTrack (Entity _ track) = TrackResponse (trackCreated track) (trackCheckpoints track)
+fromTrack :: Entity(Track) -> TrackP
+fromTrack (Entity _ track) = TrackP (UTCTimeP $ trackCreated track) (trackCheckpoints track)
+
+$(deriveJSON defaultOptions{fieldLabelModifier = drop 4, constructorTagModifier = map toLower} ''TrackP)
