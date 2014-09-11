@@ -1,13 +1,24 @@
-install:
-  - sudo sh -c "wget -qO- https://get.docker.io/gpg | apt-key add -"
-  - sudo sh -c "echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list"
-  - sudo apt-get update
-  - sudo mkdir -p /var/lib/docker
-  - echo exit 101 | sudo tee /usr/sbin/policy-rc.d
-  - sudo chmod +x /usr/sbin/policy-rc.d
-  - sudo apt-get install -y slirp lxc lxc-docker aufs-tools cgroup-lite
-  - curl -sLo linux https://github.com/jpetazzo/sekexe/raw/master/uml
-  - chmod +x linux
-  - ./linux quiet mem=2G rootfstype=hostfs rw eth0=slirp,,/usr/bin/slirp-fullbolt init=$(pwd)/travis/docker.sh WORKDIR=$(pwd) HOME=$HOME | tee /tmp/test.log
+language: haskell
+ghc: 7.8
 
-script: grep -q ^SUCCEEDED /tmp/test.log && ! grep -q ^FAIL /tmp/test.log
+env:
+  - GHCVER=7.8.3
+
+before_install:
+ - travis_retry sudo add-apt-repository -y ppa:hvr/ghc
+ - travis_retry sudo apt-get update
+ - travis_retry sudo apt-get install cabal-install-1.20 ghc-$GHCVER-prof ghc-$GHCVER-dyn
+ - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/1.20/bin:$PATH
+ - export PATH=~/.cabal/bin:$PATH # for newer alex
+ - cabal update
+
+script:
+  - cabal configure -v2  # -v2 provides useful information for debugging
+  - cabal build -v2
+
+install:
+ - cabal install alex happy
+ - cabal install yesod-platform yesod-bin --reorder-goals --max-backjumps=-1
+ - cabal install yesod-bin --reorder-goals --max-backjumps=-1
+ - 'cabal sandbox init'
+ - cabal install -j . --only-dependencies --reorder-goals --max-backjumps=-1
