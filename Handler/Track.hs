@@ -48,4 +48,4 @@ center track = LatLng (sumLat / 2) (sumLng / 2) where
 fromTrack :: Entity(Track) -> TrackP
 fromTrack (Entity _ track) = TrackP (UTCTimeP $ trackCreated track) (trackCheckpoints track)
 
-$(deriveJSON defaultOptions{fieldLabelModifier = drop 4, constructorTagModifier = map toLower} ''TrackP)
+$(deriveJSON defaultOptions ''TrackP)
