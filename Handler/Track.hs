@@ -8,7 +8,6 @@ import           App.UTCTimeP
 import           Import
 import           Network.HTTP.Types.Status
 import Data.Aeson.TH
-import Data.Char(toLower)
 import Data.List(head,last)
 
 getTrackR :: UTCTimeP -> Handler Value

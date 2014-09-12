@@ -10,3 +10,5 @@
 /track/near/#LatLngP NearestTracksR GET
 
 /challenge/submit AttemptR POST
+
+/token TokenR POST

@@ -22,6 +22,7 @@ library
                      Handler.Home
                      Handler.Track
                      Handler.Challenge
+                     Handler.Token
                      App.Pieces
                      App.UTCTimeP
 
@@ -76,6 +77,9 @@ library
                  , time                          >= 1.4        && < 2.0
                  , old-locale                    >= 1.0        && < 2.0
                  , http-types                    >= 0.8.5      && < 2.0
+                 , wai                           >= 3.0        && < 4.0
+                 , case-insensitive              >= 1.0        && < 2.0
+                 , conduit-extra                 >= 1.1        && < 2.0
 
 executable         time-attack
     if flag(library-only)
