@@ -14,6 +14,7 @@ import           Network.HTTP.Client.Conduit hiding (requestHeaders)
 import qualified Network.HTTP.Client.Conduit as H
 import           Network.HTTP.Types.Status
 import           Network.Wai                 (requestHeaders)
+import Data.Char(toLower)
 
 
 vkCheckRequest :: H.Request
@@ -56,6 +57,6 @@ newtype Token = Token { unToken :: Text } deriving (Eq, Show)
 
 data VKTokenResp = VKTokenResp { success :: Int, user_id :: Int, expire :: Text } deriving (Eq, Show)
 
-$(deriveJSON defaultOptions ''Token)
+$(deriveJSON defaultOptions{constructorTagModifier = fmap toLower, fieldLabelModifier = fmap toLower . drop 2 } ''Token)
 $(deriveJSON defaultOptions ''TokenCheck)
 $(deriveJSON defaultOptions ''VKTokenResp)

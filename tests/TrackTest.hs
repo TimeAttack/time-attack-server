@@ -36,7 +36,6 @@ trackSpecs =
             statusIs 204
         yit "GET by ID should work now" $ do
             get $ TrackR $ UTCTimeP time
-            printBody
             statusIs 200
         yit "OK. Remove this track" $ do
             runDB (deleteBy $ UnicTrackDate time)

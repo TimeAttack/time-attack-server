@@ -12,7 +12,8 @@ import Application (makeFoundation)
 
 import HomeTest
 import ChallengeTest
-import TrackTest 
+import TrackTest
+import TokenTest
 
 main :: IO ()
 main = do
@@ -25,3 +26,4 @@ main = do
             homeSpecs
             trackSpecs
             challengeSpecs
+            tokenSpecs
