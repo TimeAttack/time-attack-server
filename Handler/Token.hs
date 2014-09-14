@@ -15,6 +15,9 @@ import qualified Network.HTTP.Client.Conduit as H
 import           Network.HTTP.Types.Status
 import           Network.Wai                 (requestHeaders)
 import Data.Char(toLower)
+import Data.IP
+import Data.Text(pack, unpack)
+import Control.Monad(mzero)
 
 
 vkCheckRequest :: H.Request
@@ -50,8 +53,14 @@ requireClientIp = do
 
 data TokenCheck = TokenCheck {
   token :: Token,
-  ip    :: Text
+  ip    :: IP
 } deriving (Eq, Show)
+
+instance FromJSON IP where
+    parseJSON (String ip) = return $ (read . unpack) ip
+    parseJSON _ = mzero
+instance ToJSON IP where
+    toJSON = String . pack . show
 
 newtype Token = Token { unToken :: Text } deriving (Eq, Show)
 
