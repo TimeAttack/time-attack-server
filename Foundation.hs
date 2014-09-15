@@ -4,7 +4,7 @@ import Prelude
 import Yesod
 import Yesod.Static
 import Yesod.Auth
-import Yesod.Auth.BrowserId
+import Data.Text(unpack)
 import Yesod.Default.Config
 import Yesod.Default.Util (addStaticContentExternal)
 import Network.HTTP.Client.Conduit (Manager, HasHttpManager (getHttpManager))
@@ -14,12 +14,15 @@ import qualified Database.Persist
 import Database.Persist.Sql (SqlPersistT)
 import Settings.StaticFiles
 import Settings (widgetFile, Extra (..))
-import Model
 import Text.Jasmine (minifym)
+import Control.Monad(liftM)
 import Text.Hamlet (hamletFile)
+import Data.Time.Clock.POSIX
+import           Data.List                   (find)
 import Yesod.Core.Types (Logger)
 import App.Pieces
 import App.UTCTimeP(UTCTimeP)
+import App.VKAuth
 
 -- | The site argument for your application. This can be a good place to
 -- keep settings and values requiring initialization before your application
@@ -126,25 +129,22 @@ instance YesodPersistRunner App where
     getDBRunner = defaultGetDBRunner connPool
 
 instance YesodAuth App where
-    type AuthId App = UserId
+    type AuthId App = VKToken
 
     -- Where to send a user after successful login
     loginDest _ = HomeR
     -- Where to send a user after logout
     logoutDest _ = HomeR
 
-    getAuthId creds = runDB $ do
-        x <- getBy $ UniqueUser $ credsIdent creds
-        case x of
-            Just (Entity uid _) -> return $ Just uid
-            Nothing -> do
-                fmap Just $ insert User
-                    { userIdent = credsIdent creds
-                    , userPassword = Nothing
-                    }
+    getAuthId cred = return (expires >>= \t -> Just $ VKToken (credsIdent cred) t) where
+        expires = liftM (posixSecondsToUTCTime . fromInteger . read . unpack . snd) $ find (\(name, _) -> name == "expire") (credsExtra cred)
+
+    maybeAuthId = do
+        ms <- lookupSession credsKey
+        return $ ms >>= fromPathPiece
 
     -- You can add other plugins like BrowserID, email or OAuth here
-    authPlugins _ = [authBrowserId def]
+    authPlugins _ = [authVKClient]
 
     authHttpManager = httpManager
 
