@@ -8,5 +8,6 @@
 
 /track/#UTCTimeP TrackR GET PUT
 /track/near/#LatLngP NearestTracksR GET
+/search/track/*LatLngBoxP TrackByBoxR GET
 
 /challenge/submit AttemptR POST

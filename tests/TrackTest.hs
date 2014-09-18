@@ -15,10 +15,9 @@ trackSpecs =
     ydescribe "Track API" $ do
         let timeStr = "1411034454"
         let time = (posixSecondsToUTCTime . fromInteger . read) timeStr
-        yit "searches for track by created date. but there is no track" $ do
+        yit "Searches for track by created date. but there is no track" $ do
             get $ TrackR $ UTCTimeP time
             statusIs 404
-            bodyContains timeStr
         yit "let's create new track, request it and remove it" $ do
             trackId <- runDB $ insert $ Track time (LatLng 1.2 1.3) [LatLng 23.1 22.45]
             get $ TrackR $ UTCTimeP time
@@ -36,21 +35,32 @@ trackSpecs =
         yit "GET by ID should work now" $ do
             get $ TrackR $ UTCTimeP time
             statusIs 200
+            bodyContains "23.12"
         yit "OK. Remove this track" $ do
             runDB (deleteBy $ UnicTrackDate time)
             get $ TrackR $ UTCTimeP time
             statusIs 404
         yit "Now lets find nearest tracks to our position. But there are no tracks in DB ;(" $ do
             get $ NearestTracksR $ LatLngP 10 10
-            statusIs 404
+            statusIs 200
+            bodyContains "[]"
         yit "Same story. Put track into DB. Search for it. And remove it" $ do
-            trackId <- runDB $ insert $ Track time (LatLng 100.2 100.3) [LatLng 23.1 22.45]
-            get $ NearestTracksR $ LatLngP 100 100
+            trackId <- runDB $ insert $ Track time (LatLng 80.2 100.3) [LatLng 80.1 100.45]
+            get $ NearestTracksR $ LatLngP 80 100
             runDB (delete trackId)
             statusIs 200
+            bodyContains "80.1"
         yit "DB contains no tracks again" $ do
-            get $ NearestTracksR $ LatLngP 100 100
-            statusIs 404
+            get $ NearestTracksR $ LatLngP 80 100
+            statusIs 200
+            bodyContains "[]"
+        yit "Next is a search by Box model action. same story. Put track to DB, search and remove it" $ do
+            trackId <- runDB $ insert $ Track time (LatLng 80.2 100.3) [LatLng 80.1 100.45]
+            get $ TrackByBoxR $ LatLngBoxP (LatLngP 81.2 101.3) (LatLngP 79.3 99.45)
+            runDB (delete trackId)
+            statusIs 200
+            bodyContains "100.45"
+
 
 
 

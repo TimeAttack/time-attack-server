@@ -7,14 +7,18 @@
     <p>_{MsgAppDescription}
     <a href="http://play.google.com">_{MsgDownloadGoogleStore}
     <p>And check our API
-    <ul>
-      <li>
+    <dl>
+      <dd>
         <a href=@{TrackR $ readFormattedUTCTimeP "201412032333"}>GET track by time it was created
-      <li>
+      <dd>
         <a href=@{NearestTracksR $ LatLngP 100.10 200.10}>GET by nearest location
-      <li>
-        <p> You could submit new track with curl
-        <p well>curl -H "Content-Type: application/json; charset=UTF-8" -X PUT -d '{"created":"201412032333","checkpoints":[{"lat": 12.3, "lng":15.4},{"lat":13.1, "lng":43.2}]}' http://api.tapcat.net/track/201412032333
+      <dt>You could submit new track with curl
+      <dd well>curl -H "Content-Type: application/json; charset=UTF-8" -X PUT -d '{"created":"201412032333","checkpoints":[{"lat": 12.3, "lng":15.4},{"lat":13.1, "lng":43.2}]}' http://api.tapcat.net/track/201412032333
+      <dt>It's possible to search track by coordinate box
+      <dd>
+        <a href=@{TrackByBoxR $ LatLngBoxP (LatLngP 25.5 100.3) (LatLngP 5.3 3.45) }>GET /topRight/BottomLeft
+
+
 
   <section .col-md-4>
     <img .img-responsive alt="Application screenshot" src="@{StaticR img_screenshot_jpg}">
