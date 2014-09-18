@@ -25,9 +25,9 @@ import Data.Text hiding (find, toLower, drop)
 vkCheckRequest :: H.Request
 vkCheckRequest = def {
        H.secure        = True
-     , H.host          = TE.encodeUtf8 "vk.com"
+     , H.host          = TE.encodeUtf8 "api.vk.com"
      , H.port          = 443
-     , H.path          = TE.encodeUtf8 "dev"
+     , H.path          = TE.encodeUtf8 ""
      , H.responseTimeout = Just 120000000 -- 2 minutes
      }
 
@@ -58,7 +58,7 @@ checkVKToken :: MonadIO m => TokenCheck -> H.Manager
 checkVKToken tokenCheck mgr = do
   let body = [("token", (TE.encodeUtf8 . unToken . token) tokenCheck),
               ("ip", (TE.encodeUtf8 . pack . show . unIP' . ip) tokenCheck)]
-  response <- liftIO $ H.httpLbs (H.urlEncodedBody body vkCheckRequest{method = "POST"}) mgr
+  response <- liftIO $ H.httpLbs (H.urlEncodedBody body vkCheckRequest{path = "method/secure.checkToken", method = "POST"}) mgr
   return $ (decode (H.responseBody response) :: Maybe VKTokenResp)
 
 requireClientIp :: (MonadHandler m) => m IP
