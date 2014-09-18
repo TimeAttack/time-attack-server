@@ -3,19 +3,18 @@ module TrackTest
     ( trackSpecs
     ) where
 
-import           Data.Time
-import           System.Locale
-import           TestImport
-import App.Pieces
-import App.UTCTimeP
+import           App.Pieces
+import           App.UTCTimeP
 import           Data.Aeson
-import Handler.Track
+import           Data.Time.Clock.POSIX
+import           Handler.Track
+import           TestImport
 
 trackSpecs :: Spec
 trackSpecs =
     ydescribe "Track API" $ do
-        let timeStr = "201412032333"
-        let time = readTime defaultTimeLocale "%Y%m%d%M%S" timeStr
+        let timeStr = "1411034454"
+        let time = (posixSecondsToUTCTime . fromInteger . read) timeStr
         yit "searches for track by created date. but there is no track" $ do
             get $ TrackR $ UTCTimeP time
             statusIs 404

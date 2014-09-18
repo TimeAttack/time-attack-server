@@ -13,7 +13,7 @@ import Application (makeFoundation)
 import HomeTest
 import ChallengeTest
 import TrackTest
-import AuthTest
+--import AuthTest
 
 main :: IO ()
 main = do

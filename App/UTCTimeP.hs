@@ -7,16 +7,17 @@ import           Data.Time
 import Data.Aeson
 import           Yesod.Core.Dispatch
 import           Prelude
-import           System.Locale
 import Control.Applicative (pure)
+import Data.Time.Clock.POSIX
 
 newtype UTCTimeP = UTCTimeP { unUTCTimeP :: UTCTime } deriving (Read, Eq, Show)
 
 readFormattedUTCTimeP :: Text -> UTCTimeP
-readFormattedUTCTimeP = UTCTimeP . (readTime defaultTimeLocale "%Y%m%d%M%S") . T.unpack
+readFormattedUTCTimeP = UTCTimeP . posixSecondsToUTCTime . fromInteger . read . T.unpack
 
 showFormattedUTCTimeP :: UTCTimeP -> Text
-showFormattedUTCTimeP = T.pack . (formatTime defaultTimeLocale "%Y%m%d%M%S") . unUTCTimeP
+showFormattedUTCTimeP = T.pack . show . toInteger' where
+    toInteger' = round . utcTimeToPOSIXSeconds . unUTCTimeP :: UTCTimeP -> Integer
 
 instance PathPiece UTCTimeP where
     toPathPiece = showFormattedUTCTimeP

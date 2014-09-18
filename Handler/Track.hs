@@ -21,6 +21,7 @@ putTrackR time = do
   _ <- runDB $ insert $ Track (unUTCTimeP $ time) (center track) (checkpoints track)
   sendResponseStatus status204 ()
 
+
 getNearestTracksR :: LatLngP -> Handler Value
 getNearestTracksR latLng = do
   trackEntities <- runDB $ selectList([ TrackCenter >. lowerBound, TrackCenter <. upperBound]) []

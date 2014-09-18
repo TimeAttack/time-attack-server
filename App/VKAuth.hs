@@ -1,25 +1,25 @@
 {-# LANGUAGE OverloadedStrings #-}
 module App.VKAuth (vkCheckRequest, authVKClient) where
 
-import Prelude
-import Yesod.Auth
 import           Data.Aeson                  (decode)
 import           Data.Aeson.TH
+import           Data.Char                   (toLower)
 import           Data.Default                (def)
+import           Data.IP
 import           Data.List                   (find)
 import qualified Data.Text.Encoding          as TE
 import           Network.HTTP.Client.Conduit hiding (requestHeaders)
-import qualified Network.HTTP.Conduit as H
+import qualified Network.HTTP.Conduit        as H
 import           Network.HTTP.Types.Status
 import           Network.Wai                 (requestHeaders)
-import Data.Char(toLower)
-import Data.IP
+import           Prelude
+import           Yesod.Auth
 --import Data.Text(Text(..), pack, unpack)
-import Control.Monad(mzero)
-import           Control.Monad            (liftM)
-import Yesod.Core
+import           Control.Monad               (mzero)
+import           Control.Monad               (liftM)
+import           Yesod.Core
 --import Text.Hamlet (hamlet)
-import Data.Text hiding (find, toLower, drop)
+import           Data.Text                   hiding (drop, find, toLower)
 --import Data.Time(UTCTime(..))
 
 vkCheckRequest :: H.Request
@@ -81,12 +81,11 @@ data TokenCheck = TokenCheck {
 instance FromJSON IP' where
     parseJSON (String ip') = return $ IP' $ (read . unpack) ip'
     parseJSON _ = mzero
+
 instance ToJSON IP' where
     toJSON = String . pack . show . unIP'
 
 newtype VKToken = VKToken { unToken :: Text } deriving (Eq, Show)
-
---data VKCred = VKCred { userId :: Int, expireTime :: UTCTime } deriving (Eq, Show)
 
 data VKTokenResp = VKTokenResp { user_id :: Int, expire :: Text } deriving (Eq, Show)
 

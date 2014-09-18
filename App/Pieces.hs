@@ -9,6 +9,11 @@ import Data.Time
 import Data.Time.Clock.POSIX
 import           Data.Monoid ((<>))
 
+data LatLngBox = LatLngBox
+    { topLeft :: LatLngP
+    , bottomRight :: LatLngP
+    } deriving (Eq, Show)
+
 data LatLngP = LatLngP {
         lat :: Double,
         lng :: Double
