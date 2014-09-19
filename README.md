@@ -16,3 +16,5 @@ time-attack-server
 >
 * `sudo port install postgresql94`
 * `boot2docker ssh -L localhost:5432:localhost:5432`
+
+[![Build Status](https://travis-ci.org/TimeAttack/time-attack-server.svg?branch=master)](https://travis-ci.org/TimeAttack/time-attack-server)
