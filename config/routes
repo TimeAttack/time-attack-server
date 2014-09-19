@@ -10,4 +10,5 @@
 /track/near/#LatLngP NearestTracksR GET
 /search/track/*LatLngBoxP TrackByBoxR GET
 
-/challenge/submit AttemptR POST
+/challenge AttemptR POST
+/challenge/#Int/#UTCTimeP ChallengeByIdR GET
