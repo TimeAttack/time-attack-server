@@ -33,17 +33,16 @@ getNearestTracksR :: LatLngP -> Handler Value
 getNearestTracksR latLngP = searchInBox box >>= returnJson
   where
     range = 1
-    topRight' = latLng (lat latLngP + range) (lng latLngP + range)
-    bottomLeft' = latLng (lat latLngP - range) (lng latLngP - range)
-    box = LatLngBoxP topRight' bottomLeft'
+    sw' = latLng (lat latLngP - range) (lng latLngP - range)
+    ne' = latLng (lat latLngP + range) (lng latLngP + range)
+    box = LatLngBoxP sw' ne'
 
 searchInBox :: LatLngBoxP -> HandlerT App IO [TrackP]
 searchInBox box = do
-  tracks <- runDB $ selectList([ TrackCenter >. (toLatLng $ bottomLeft box), TrackCenter <. (toLatLng $ topRight box)]) []
+  tracks <- runDB $ selectList([ TrackCenter >. (toLatLng $ sw box), TrackCenter <. (toLatLng $ ne box)]) []
   return $ fmap fromTrack tracks
   where
-    toLatLng :: LatLngP -> LatLng
-    toLatLng = LatLng <$> lat <*> lng
+    toLatLng (LatLngP lat' lng') = LatLng lat' lng'
 
 data TrackP = TrackP
     {   created     :: UTCTimeP

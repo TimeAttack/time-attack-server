@@ -56,7 +56,7 @@ trackSpecs =
             bodyContains "[]"
         yit "Next is a search by Box model action. same story. Put track to DB, search and remove it" $ do
             trackId <- runDB $ insert $ Track time (LatLng 80.2 100.3) [LatLng 80.1 100.45]
-            get $ TrackByBoxR $ LatLngBoxP (LatLngP 81.2 101.3) (LatLngP 79.3 99.45)
+            get $ TrackByBoxR $ LatLngBoxP (LatLngP 79.3 99.45) (LatLngP 81.2 101.3)
             runDB (delete trackId)
             statusIs 200
             bodyContains "100.45"
