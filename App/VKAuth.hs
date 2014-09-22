@@ -14,13 +14,10 @@ import           Network.HTTP.Types.Status
 import           Network.Wai                 (requestHeaders)
 import           Prelude
 import           Yesod.Auth
---import Data.Text(Text(..), pack, unpack)
 import           Control.Monad               (mzero)
 import           Control.Monad               (liftM)
 import           Yesod.Core
---import Text.Hamlet (hamlet)
 import           Data.Text                   hiding (drop, find, toLower)
---import Data.Time(UTCTime(..))
 
 vkCheckRequest :: H.Request
 vkCheckRequest = def {

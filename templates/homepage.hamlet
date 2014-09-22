@@ -10,10 +10,13 @@
     <ul>
       <li>
         <p>You could submit new track with curl
-        <p well>curl -H "Content-Type: application/json; charset=UTF-8" -X PUT -d '{"created":"201412032333","checkpoints":[{"lat": 12.3, "lng":15.4},{"lat":13.1, "lng":43.2}]}' http://api.tapcat.net/track/201412032333
+        <p well>curl -H "Content-Type: application/json; charset=UTF-8" -X PUT -d '{"created":"1411220135","checkpoints":[{"lat": 59.765403, "lng": 30.638547},{"lat":59.769724, "lng":30.649018},{"lat": 59.757773, "lng": 30.619407},{"lat":59.751937,"lng":30.615845}]}' http://localhost:3000/track/1411220135
       <li>
         <p>It's possible to get track by time it was created
-        <a href=@{TrackR $ readFormattedUTCTimeP "201412032333"}>GET track
+        <a href=@{TrackR $ readFormattedUTCTimeP $ T.pack "201412032333"}>GET track
+      <li>
+        <p>You could submit new Challenge
+        curl -H "Content-Type: application/json; charset=UTF-8" -X POST -d '{"user-id":12,"track-id":1411220135,"time":[1411220235,1411220335,1411220435,1411220535]}' http://localhost:3000/challenge
       <li>
         <p>It's possible to look for tracks nearby
         <a href=@{NearestTracksR $ LatLngP 100.10 200.10}>GET by nearest location
@@ -22,7 +25,7 @@
         <a href=@{TrackByBoxR $ LatLngBoxP (LatLngP 25.5 100.3) (LatLngP 5.3 3.45) }>GET /topRight/BottomLeft
       <li>
         <p>You could review user challenge /challenge/userid/time
-        <a href=@{ChallengeByIdR 23 $ readFormattedUTCTimeP "201412032333"}>GET challenge review
+        <a href=@{ChallengeByIdR 23 $ readFormattedUTCTimeP $ T.pack "201412032333"}>GET challenge review
 
 
 

@@ -1,0 +1,32 @@
+window.onload = function() {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open("GET","",true);
+  xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+      drawMap(JSON.parse(xmlhttp.responseText));
+    }
+  }
+  xmlhttp.send();
+}
+
+function drawMap(challenge) {
+  var center = new google.maps.LatLng(challenge.map[0].lat, challenge.map[0].lng);
+  var mapOptions = {
+    zoom: 20,
+    center: center,
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  };
+  var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+  var route = _.map(challenge.map, function(item) { return new google.maps.LatLng(item.lat, item.lng)});
+  var bounds = new google.maps.LatLngBounds();
+  _.each(route, function(point) { bounds.extend(point); });
+  var polyline = new google.maps.Polyline({
+    path: route,
+    strokeColor: '#FF0000',
+    strokeWeight: 3
+  });
+  polyline.setMap(map);
+  map.fitBounds(bounds);
+}

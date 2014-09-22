@@ -2,29 +2,42 @@
 {-# LANGUAGE TupleSections     #-}
 module App.UTCTimeP(UTCTimeP(..), readFormattedUTCTimeP, showFormattedUTCTimeP) where
 
-import           Data.Text           as T
+import           Control.Applicative   (pure)
+import           Data.Aeson
+import           Data.Int
+import           Data.Scientific       (Scientific, toBoundedInteger)
+import           Data.Text             as T
 import           Data.Time
-import Data.Aeson
-import           Yesod.Core.Dispatch
+import           Data.Time.Clock.POSIX
 import           Prelude
-import Control.Applicative (pure)
-import Data.Time.Clock.POSIX
+import           Yesod.Core.Dispatch
 
-newtype UTCTimeP = UTCTimeP { unUTCTimeP :: UTCTime } deriving (Read, Eq, Show)
+newtype UTCTimeP = UTCTimeP { unUTCTimeP :: UTCTime } deriving (Read, Eq, Show, Ord)
 
-readFormattedUTCTimeP :: Text -> UTCTimeP
-readFormattedUTCTimeP = UTCTimeP . posixSecondsToUTCTime . fromInteger . read . T.unpack
+class UTCTimePReadable a where
+    readFormattedUTCTimeP :: a -> UTCTimeP
+
+instance UTCTimePReadable Text where
+    readFormattedUTCTimeP = UTCTimeP . posixSecondsToUTCTime . fromInteger . read . T.unpack
+
+instance UTCTimePReadable Scientific where
+    readFormattedUTCTimeP = (maybe (error "Not a number") fromInt64) . toBoundedInteger
+
+fromInt64 :: Int64 -> UTCTimeP
+fromInt64 = UTCTimeP . posixSecondsToUTCTime . fromIntegral
+
+toInt :: UTCTimeP -> Integer
+toInt = round . utcTimeToPOSIXSeconds . unUTCTimeP
 
 showFormattedUTCTimeP :: UTCTimeP -> Text
-showFormattedUTCTimeP = T.pack . show . toInteger' where
-    toInteger' = round . utcTimeToPOSIXSeconds . unUTCTimeP :: UTCTimeP -> Integer
+showFormattedUTCTimeP = T.pack . show . toInt
 
 instance PathPiece UTCTimeP where
     toPathPiece = showFormattedUTCTimeP
     fromPathPiece = Just . readFormattedUTCTimeP
 
 instance FromJSON UTCTimeP where
-    parseJSON = withText "UTCTime" $ \x -> pure $ readFormattedUTCTimeP x
+    parseJSON = withScientific "UTCTimeP" $ \x -> pure $ readFormattedUTCTimeP x
 
 instance ToJSON UTCTimeP where
-    toJSON = String . showFormattedUTCTimeP
+    toJSON = Number . fromIntegral . toInt

@@ -21,8 +21,9 @@ Track
 Challenge
     user Double
     track TrackId
-    time UTCTime
-    UnicUserTime user time
+    start UTCTime
+    time [UTCTime]
+    UnicUserTime user start
     deriving Show
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

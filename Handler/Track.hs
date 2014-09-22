@@ -23,7 +23,7 @@ putTrackR time = do
   where
     center :: TrackP -> LatLng
     center = LatLng <$> (/ 2) . sumLat <*> (/ 2) . sumLng where
-    sumLat = (+) <$> latLngLat . topRightTrackPoint  <*> latLngLat . bottomLeftTrackPoint
+    sumLat = (+) <$> latLngLat . topRightTrackPoint <*> latLngLat . bottomLeftTrackPoint
     sumLng = (+) <$> latLngLng . topRightTrackPoint <*> latLngLng . bottomLeftTrackPoint
 
 getTrackByBoxR :: LatLngBoxP -> Handler Value
