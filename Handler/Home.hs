@@ -5,6 +5,7 @@ import Import
 
 import App.Pieces
 import App.UTCTimeP
+import Data.Text as T
 
 -- This is a handler function for the GET request method on the HomeR
 -- resource pattern. All of your resource patterns are defined in

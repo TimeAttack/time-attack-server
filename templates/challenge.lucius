@@ -1,0 +1,6 @@
+html, .container-fluid, body { height: 100%; width: 100%;}
+#main { height: 100%; }
+.track_map { display: table;}
+.track_row { height: 100%; display: table-row;}
+.track_cell { display: table-cell; float: none;}
+.track_description { width: 100%; float: left;}
